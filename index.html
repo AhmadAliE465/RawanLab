@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مذكراتي - My Note Book</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts: Cairo for modern look, Amiri for classic book feel -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="light-mode">
+    <!-- Loader -->
+    <div id="loader" class="loader-overlay">
+        <div class="loader-content">
+            <i class="fas fa-book-open fa-spin"></i>
+            <p>جاري تحميل مكتبتك...</p>
+        </div>
+    </div>
+
+    <div id="app">
+        <!-- Background Animation Layer -->
+        <div class="bg-animation">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="circle circle-3"></div>
+        </div>
+
+        <!-- Home Page (Library) -->
+        <section id="library-page" class="page active">
+            <header class="glass">
+                <div class="container">
+                    <div class="logo">
+                        <i class="fas fa-book-open"></i>
+                        <h1>مذكراتي</h1>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-box glass">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-input" placeholder="ابحث عن كتاب...">
+                        </div>
+                        <button id="theme-toggle" class="icon-btn glass">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="container">
+                <div class="hero">
+                    <h2 class="hero-title">مرحباً بك في مكتبتك الرقمية</h2>
+                    <p class="hero-subtitle">نظم أفكارك، دروسك، وذكرياتك في كتب أنيقة</p>
+                    <button id="open-create-modal" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        إنشاء كتاب جديد
+                    </button>
+                </div>
+
+                <!-- Backup & Restore Toolbar -->
+                <div class="backup-toolbar">
+                    <button id="export-backup-btn" class="btn-secondary backup-btn" type="button" title="Export Backup"
+                        aria-label="Export Backup">
+                        <i class="fas fa-file-export"></i>
+                        تصدير نسخة احتياطية
+                    </button>
+                    <button id="import-backup-btn" class="btn-secondary backup-btn" type="button" title="Import Backup"
+                        aria-label="Import Backup">
+                        <i class="fas fa-file-import"></i>
+                        استيراد نسخة احتياطية
+                    </button>
+                    <input type="file" id="import-file-input" accept=".json,application/json" hidden>
+                </div>
+
+                <div id="books-grid" class="books-grid">
+                    <!-- Books will be injected here by JS -->
+                </div>
+            </main>
+        </section>
+
+        <!-- Book Viewer Page -->
+        <section id="book-viewer-page" class="page">
+            <div class="viewer-header">
+                <button id="close-book" class="icon-btn glass">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <h2 id="viewing-book-title">عنوان الكتاب</h2>
+                <div class="viewer-actions">
+                    <button id="add-page-btn" class="icon-btn glass" title="إضافة صفحة جديدة">
+                        <i class="fas fa-file-circle-plus"></i>
+                    </button>
+                    <button id="delete-book-btn" class="icon-btn glass danger" title="حذف الكتاب">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="book-container">
+                <div id="book" class="book">
+                    <!-- Pages will be injected here -->
+                </div>
+            </div>
+
+            <div class="book-controls">
+                <button id="prev-page" class="nav-btn glass">
+                    <i class="fas fa-chevron-right"></i>
+                    السابق
+                </button>
+                <div class="page-indicator glass">
+                    صفحة <span id="current-page-num">1</span> من <span id="total-pages-num">1</span>
+                </div>
+                <button id="next-page" class="nav-btn glass">
+                    التالي
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Create Book Modal -->
+        <div id="create-modal" class="modal-overlay">
+            <div class="modal-content glass">
+                <h3>إنشاء كتاب جديد</h3>
+                <form id="create-book-form">
+                    <div class="form-group">
+                        <label for="book-title">عنوان الكتاب</label>
+                        <input type="text" id="book-title" required placeholder="أدخل عنوان الكتاب...">
+                    </div>
+                    <div class="form-group">
+                        <label>اختر لون الغلاف</label>
+                        <div class="color-picker">
+                            <label class="color-option" style="background-color: #2c3e50;">
+                                <input type="radio" name="cover-color" value="#2c3e50" checked>
+                            </label>
+                            <label class="color-option" style="background-color: #e74c3c;">
+                                <input type="radio" name="cover-color" value="#e74c3c">
+                            </label>
+                            <label class="color-option" style="background-color: #27ae60;">
+                                <input type="radio" name="cover-color" value="#27ae60">
+                            </label>
+                            <label class="color-option" style="background-color: #f39c12;">
+                                <input type="radio" name="cover-color" value="#f39c12">
+                            </label>
+                            <label class="color-option" style="background-color: #8e44ad;">
+                                <input type="radio" name="cover-color" value="#8e44ad">
+                            </label>
+                            <label class="color-option" style="background-color: #2980b9;">
+                                <input type="radio" name="cover-color" value="#2980b9">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" id="close-modal" class="btn-secondary">إلغاء</button>
+                        <button type="submit" class="btn-primary">إنشاء الكتاب</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio elements for effects -->
+    <audio id="flip-sound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"
+        preload="auto"></audio>
+    <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"
+        preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
